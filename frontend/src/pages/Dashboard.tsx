@@ -1,22 +1,22 @@
 import Navbar from '../../components/Navbar.tsx';
-import { useEffect,useState } from 'react';
+import { useEffect,useState,useContext } from 'react';
+import { AuthContext } from '../context/AuthContext.tsx';
 
-type credentialsProps={
-    setIsAuthenticated:React.Dispatch<React.SetStateAction<boolean>>;
-}
+
 
 type userData = {
     username:string,
 }
 
-function Dashboard({setIsAuthenticated}:credentialsProps){
+function Dashboard(){
     const[data, setData] = useState<userData|null>(null);
+    const auth = useContext(AuthContext);
 
     useEffect(()=>{
         const fetchData = async()=>{
             const token = localStorage.getItem("token");
             if(token){
-                setIsAuthenticated(true);
+                auth?.login();
             }
             try{
                 const data = await fetch('http://localhost:4321/users/dashboard-data',{

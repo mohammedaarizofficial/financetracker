@@ -1,15 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-
+import {useContext} from 'react';
+import { AuthContext } from '../context/AuthContext';
 interface LoginProps{
     Username:string,
     Password:string,
     setUsername:React.Dispatch<React.SetStateAction<string>>,
     setPassword:React.Dispatch<React.SetStateAction<string>>,
-    setIsAuthenticated:React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function Login({Username,Password,setUsername, setPassword,setIsAuthenticated}:LoginProps){
+function Login({Username,Password,setUsername, setPassword}:LoginProps){
     const navigate = useNavigate();
+    const auth = useContext(AuthContext);
 
     const handleSubmit = async(e:React.FormEvent)=>{
         e.preventDefault();
@@ -27,7 +28,7 @@ function Login({Username,Password,setUsername, setPassword,setIsAuthenticated}:L
             const data = await credentials.json();
             if(credentials.ok){
                 localStorage.setItem('token', data.token);
-                setIsAuthenticated(true);
+                auth?.login();
                 navigate('/dashboard');
             }else{
                 console.log('not able to navigate');

@@ -1,15 +1,15 @@
 import {Navigate} from 'react-router-dom';
+import { useContext} from 'react';
+import { AuthContext } from '../src/context/AuthContext';
 
-interface RouteProps{
-    isAuthenticated:boolean,
-    children:React.ReactNode
-}
 
-function ProtectedRoute({isAuthenticated, children}:RouteProps){
-    if(!isAuthenticated){
+
+function ProtectedRoute({children}:{children:React.ReactNode}){
+    const auth = useContext(AuthContext);
+    if(!auth?.isAuthenticated){
         return <Navigate to='/' />;
     }
-    return children;
+    return <>{children}</>;
 }
 
 export default ProtectedRoute;
