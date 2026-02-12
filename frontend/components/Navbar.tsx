@@ -1,0 +1,22 @@
+import {NavLink} from 'react-router-dom';
+
+function Navbar(){
+    return(
+        <>
+            <div className="container">
+                <header className="fixed-top d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                    <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <svg className="bi me-2" width="40" height="32" aria-hidden="true"><use xlinkHref="#bootstrap"></use></svg>
+                        <span className="fs-4">Finance Tracker</span>
+                    </a>
+                    <ul className="nav nav-pills">
+                        <NavLink to='/' className='nav-item mx-3 py-3'>Login</NavLink>
+                        <NavLink to='/dashboard' className='nav-item mx-3 py-3'>Dashboard</NavLink>
+                    </ul>
+                </header>
+            </div>
+        </>
+    )
+}
+
+export default Navbar;
