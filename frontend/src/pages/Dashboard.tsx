@@ -1,6 +1,7 @@
 import Navbar from '../../components/Navbar.tsx';
 import { useEffect,useState,useContext } from 'react';
 import { AuthContext } from '../context/AuthContext.tsx';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -11,6 +12,7 @@ type userData = {
 function Dashboard(){
     const[data, setData] = useState<userData|null>(null);
     const auth = useContext(AuthContext);
+    const navigate = useNavigate();
 
     useEffect(()=>{
         const fetchData = async()=>{
@@ -25,6 +27,10 @@ function Dashboard(){
                     },
                 }
                 );
+                if (data.status === 401) {
+                auth?.logout();
+                navigate("/");
+            }
                 const credentials = await data.json();
                 setData(credentials);
             }catch(err){
