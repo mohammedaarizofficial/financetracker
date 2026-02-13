@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/users.routes.js';
+import incomeRoutes from './routes/income.routes.js';
 
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/users', userRoutes);
+app.use('/income', incomeRoutes);
 
 app.listen(PORT, ()=>{
   console.log(`Server is running at ${PORT}`);

@@ -1,0 +1,12 @@
+import express from 'express';
+import { getIncome, postIncome,deleteIncome,updateIncome } from '../controllers/income.controller.js';
+import { verifytoken } from '../middleware/verifytoken.js';
+
+const router = express.Router();
+
+router.get('/', verifytoken, getIncome);
+router.post('/', verifytoken, postIncome);
+router.delete('/:_id', verifytoken, deleteIncome)
+router.put('/:_id', verifytoken, updateIncome);
+
+export default router;

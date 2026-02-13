@@ -14,26 +14,6 @@ export const getUsers = async(req,res)=>{
     }
 }
 
-export const postUsers = async(req,res)=>{
-    try{
-        const users = new Users(
-            {
-                username:req.body.username,
-                password:req.body.password
-            }
-        )
-        const savedUsers = await users.save();
-        res.status(201).json(
-            {
-                username:savedUsers.username,
-                password:savedUsers.password,
-            }
-        );
-    }catch(err){
-        res.status(404).json({message:'Unable to post new user'});
-    }
-}
-
 export const checkUser = async(req,res)=>{
     try{
         const {username,password} = req.body;
@@ -47,7 +27,7 @@ export const checkUser = async(req,res)=>{
             return res.status(401).json({message:'Invalid Password'});
         }
         const token = jwt.sign(
-            {username:user.username},
+            {userId:user._id},
             'Your_secret_key',
             {expiresIn:'1h'}
         )
@@ -60,12 +40,13 @@ export const checkUser = async(req,res)=>{
 }
 
 export const dashboardData = async(req,res)=>{
-    const username = req.user.username;
-    const data = await Users.findOne({username});
+    const userId = req.user.userId;
+    const data = await Users.findById(userId);
     if(!data){
         return res.status(401).json({message:'user not found'});
     }
     res.json({username:data.username});
+
 }
 
 
