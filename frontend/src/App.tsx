@@ -4,6 +4,7 @@ import {Routes, Route} from 'react-router-dom';
 import Dashboard from './pages/Dashboard.tsx';
 import { useState } from 'react';
 import ProtectedRoute from '../components/ProtectedRoute.tsx';
+import Expenses from './pages/Expenses.tsx';
 
 function App() {
   const [username, setUsername]= useState<string>('');
@@ -17,6 +18,11 @@ function App() {
           <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute>} />
+          <Route path='/expenses' element={
+            <ProtectedRoute>
+              <Expenses />
+            </ProtectedRoute>
+          } />
       </Routes>
     </>
   )

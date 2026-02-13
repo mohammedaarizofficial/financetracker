@@ -12,6 +12,7 @@ function Navbar(){
                     <ul className="nav nav-pills">
                         <NavLink to='/' className='nav-item mx-3 py-3'>Login</NavLink>
                         <NavLink to='/dashboard' className='nav-item mx-3 py-3'>Dashboard</NavLink>
+                        <NavLink to='/expenses' className='nav-item mx-3 py-3'>Expenses</NavLink>
                     </ul>
                 </header>
             </div>

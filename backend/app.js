@@ -4,6 +4,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/users.routes.js';
 import incomeRoutes from './routes/income.routes.js';
+import expenseRoutes from './routes/expense.routes.js';
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.get('/', (req, res)=>{
 
 app.use('/users', userRoutes);
 app.use('/income', incomeRoutes);
+app.use('/expense', expenseRoutes)
 
 app.listen(PORT, ()=>{
   console.log(`Server is running at ${PORT}`);
