@@ -1,31 +1,23 @@
 import Navbar from "../../components/Navbar";
-import { useState,useEffect } from "react";
+import { useState,useContext } from "react";
 import ExpenseForm from '..//../components/ExpenseForm.tsx';
-import type {ExpenseType} from '../../types/expense.ts';
 import DeleteExpense from '../../components/DeleteExpense.tsx';
+import { FinanceContext } from "../context/FinanceContext.tsx";
 import UpdateExpense from '../../components/UpdateExpense.tsx';
 
 function Expenses(){
-    const [expenses, setExpenses]=useState<ExpenseType[]>([]);
+    const finance = useContext(FinanceContext);
+    const expense = finance?.expenses??[];
     const [isModalOpen, setIsModalOpen] =useState<boolean>(false);
     const [category, setCategory] = useState<string>('');
     const [amount, setAmount] = useState<string>('');
     const [date, setDate] = useState<string>('');
-    const token = localStorage.getItem("token");
-    const[selectedId, setSelectedId] = useState<string>('');
+    const [selectedId, setSelectedId] = useState<string>('');
+    const totalExpense = expense.reduce((sum, num)=> sum+num.amount,0);
 
-    useEffect(()=>{
-        const fetchData = async()=>{
-            const data = await fetch('http://localhost:4321/expense',{
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            });
-            const expense = await data.json();
-            setExpenses(expense);
-        }
-        fetchData();
-    },[])
+
+
+    finance?.fetchFinancialData();
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();   // ✅ THIS is where preventDefault goes
@@ -50,7 +42,7 @@ function Expenses(){
 
         const updatedExpense = await response.json();
 
-        setExpenses(prev =>
+        finance?.setExpenses(prev =>
             prev.map(item =>
                 item.id === updatedExpense.id ? updatedExpense : item
             )
@@ -63,20 +55,25 @@ function Expenses(){
         <>
         <Navbar />
         <h1>This is the expenses page</h1>
-        <ExpenseForm setExpenses={setExpenses}/>
+        <ExpenseForm />
         <div className='container'>
             <div className='row mt-2 mb-3 text-center'>
-                {expenses.map((details,index)=>(
+                {expense.map((details,index)=>(
                     <div className='card col-4 mx-1 my-2'  key={index}>
                         <div className='card-body'>
                             <h3>Amount:{details.amount}</h3>
                             <h3>Category:{details.category}</h3>
                             <h3>Date:{new Date(details.date).toLocaleDateString()}</h3>
                         </div>
-                        <DeleteExpense id={details.id} setExpenses={setExpenses}/>
+                        <DeleteExpense id={details.id} />
                         <UpdateExpense id={details.id} setIsModalOpen={setIsModalOpen} setSelectedId={setSelectedId}/>
                     </div>
                 ))}
+            </div>
+        </div>
+        <div className="card">
+            <div className='card-header' id="totalExpense">
+                The Total Expenses:{totalExpense}
             </div>
         </div>
         {isModalOpen && (

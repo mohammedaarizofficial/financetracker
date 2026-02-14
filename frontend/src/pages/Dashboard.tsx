@@ -3,6 +3,8 @@ import { useEffect,useState,useContext } from 'react';
 import { AuthContext } from '../context/AuthContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import IncomeForm from '../../components/IncomeForm.tsx';
+import { FinanceContext } from '../context/FinanceContext.tsx';
+
 
 type incomeType={
     _id:string,
@@ -19,6 +21,9 @@ function Dashboard(){
     const[data, setData] = useState<userData|null>(null);
     const [incomes, setIncomes] = useState<incomeType[]>([]);
     const auth = useContext(AuthContext);
+    const finance = useContext(FinanceContext);
+    const income = finance?.incomes??[];
+    const expense = finance?.expenses??[];
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
@@ -26,6 +31,9 @@ function Dashboard(){
     const [amount, setAmount]= useState<string>('');
     const [date, setDate] = useState<string>('');
     const [selectedId, setSelectedId]=useState<string>('');
+    const totalIncome = income.reduce((sum, income)=> sum + income.amount,0);
+    const totalExpense = expense.reduce((sum, expense)=> sum + expense.amount,0);
+    const balance = totalIncome - totalExpense;
 
     useEffect(()=>{
         const fetchData = async()=>{
@@ -64,7 +72,7 @@ function Dashboard(){
             }
         }
         fetchIncome();
-    },[incomes])
+    },[income])
 
     const handleDelete = async(_id:string)=>{
         const data = await fetch(`http://localhost:4321/income/${_id}`,{
@@ -130,6 +138,18 @@ function Dashboard(){
                 ))}
             </div>
         </div>
+        <div className="card">
+            <div className="card-header">
+                The Total Income is {totalIncome}
+            </div>
+        </div>
+        <div className='card'>
+            <div className="card-header">
+                Balance:{balance}
+            </div>
+        </div>
+
+
         {isModalOpen && (
             <div className="modal show d-block" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered">

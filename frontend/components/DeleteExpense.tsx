@@ -1,12 +1,13 @@
-import type { ExpenseType } from "../types/expense";
+import { useContext } from "react";
+import { FinanceContext } from "../src/context/FinanceContext";
 
 interface ExpenseProps{
     id:string,
-    setExpenses:React.Dispatch<React.SetStateAction<ExpenseType[]>>;
 }
 
 
-function DeleteExpense({id,setExpenses}:ExpenseProps){
+function DeleteExpense({id}:ExpenseProps){
+    const finance = useContext(FinanceContext);
     const handleDelete = async()=>{
         const token = localStorage.getItem("token");
         const data = await fetch(`http://localhost:4321/expense/${id}`,{
@@ -16,7 +17,7 @@ function DeleteExpense({id,setExpenses}:ExpenseProps){
             }
         })
         console.log(data);
-        setExpenses(prev=>prev.filter(expenses=>expenses.id !== id))
+        finance?.setExpenses(prev=>prev.filter(expenses=>expenses.id !== id))
     }
     return(
         <>

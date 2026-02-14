@@ -5,11 +5,13 @@ import Dashboard from './pages/Dashboard.tsx';
 import { useState } from 'react';
 import ProtectedRoute from '../components/ProtectedRoute.tsx';
 import Expenses from './pages/Expenses.tsx';
+import Charts from './pages/Charts.tsx';
 
 function App() {
   const [username, setUsername]= useState<string>('');
   const [password, setPassword]=useState<string>('');
-  
+
+
   return (
     <>
       <Routes>
@@ -21,6 +23,11 @@ function App() {
           <Route path='/expenses' element={
             <ProtectedRoute>
               <Expenses />
+            </ProtectedRoute>
+          } />
+          <Route path='/charts' element={
+            <ProtectedRoute>
+              <Charts />
             </ProtectedRoute>
           } />
       </Routes>

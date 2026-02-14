@@ -1,11 +1,10 @@
-import {useState} from 'react';
-import type { ExpenseType } from '../types/expense';
+import {useState,useContext} from 'react';
 
-interface ExpenseProps{
-    setExpenses:React.Dispatch<React.SetStateAction<ExpenseType[]>>;
-}
+import { FinanceContext } from '../src/context/FinanceContext';
 
-function ExpenseForm({setExpenses}:ExpenseProps){
+
+function ExpenseForm(){
+    const finance = useContext(FinanceContext)
     const [category, setCategory]= useState<string>('');
     const [amount, setAmount]=useState<string>('');
     const [date, setDate]=useState<string>('');
@@ -28,7 +27,7 @@ function ExpenseForm({setExpenses}:ExpenseProps){
                 }
             )
             const newExpense = await data.json();
-            setExpenses(prev=>[...prev,newExpense]);
+            finance?.setExpenses(prev=>[...prev,newExpense]);
             setCategory('');
             setAmount('');
             setDate('');
