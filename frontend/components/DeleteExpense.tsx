@@ -15,7 +15,7 @@ function DeleteExpense({id}:ExpenseProps){
             headers:{
                 Authorization:`Bearer ${token}`
             }
-        })
+        });
         console.log(data);
         finance?.setExpenses(prev=>prev.filter(expenses=>expenses.id !== id))
     }

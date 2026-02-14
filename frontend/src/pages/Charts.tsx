@@ -2,6 +2,7 @@ import Navbar from "../../components/Navbar";
 import DashboardChart from "../../components/DashboardChart";
 import {  useContext } from "react";
 import { FinanceContext } from "../context/FinanceContext";
+import ExpenseByCategoryChart from "../../components/ExpenseByCategoryChart";
 
 
 function Charts(){
@@ -18,6 +19,7 @@ function Charts(){
             totalIncome={totalIncome}
             totalExpense={totalExpense}
         />
+        <ExpenseByCategoryChart />
         </>
     )
 }

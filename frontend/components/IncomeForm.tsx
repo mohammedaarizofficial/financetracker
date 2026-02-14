@@ -1,6 +1,12 @@
-import {useState} from 'react';
+import {useState,useContext} from 'react';
+import { FinanceContext } from '../src/context/FinanceContext';
 
-function IncomeForm(){
+interface IncomeFormProps{
+    setIncomeModalOpen:React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function IncomeForm({setIncomeModalOpen}:IncomeFormProps){
+    const finance = useContext(FinanceContext);
     const [source, setSource]= useState<string>('');
     const [amount, setAmount]=useState<string>('');
     const [date, setDate]=useState<string>('');
@@ -24,29 +30,86 @@ function IncomeForm(){
             )
             // const newIncome = await data.json();
             console.log(data);
+            setIncomeModalOpen(false);
+            finance?.fetchFinancialData();
         }catch(err){
             console.log(err);
         }
     }
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <img className="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57" />
-                <h1 className="h3 mb-3 fw-normal">Add Income</h1>
-                <div className="form-floating">
-                    <input type="text" className="form-control mb-3" id="floatingInput" placeholder="Internship" value={source} onChange={(e)=>setSource(e.target.value)}/>
-                    <label htmlFor="floatingInput">Income Source:</label>
+            <div 
+            className="modal-backdrop fade show"
+            onClick={() => setIncomeModalOpen(false)}
+            ></div>
+
+            {/* Modal */}
+            <div className="modal show d-block" tabIndex={-1}>
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content rounded-4 shadow">
+
+                {/* Header */}
+                <div className="modal-header">
+                    <h5 className="modal-title">Add Income</h5>
+                    <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setIncomeModalOpen(false)}
+                    ></button>
                 </div>
-                <div className="form-floating">
-                    <input type="number" className="form-control mb-3" id="floatingAmount" placeholder="Amount" value={amount} onChange={(e)=>setAmount(e.target.value)}/>
-                    <label htmlFor="floatingAmount">Income Amount:</label>
+
+                {/* Body */}
+                <div className="modal-body">
+                    <form onSubmit={handleSubmit}>
+
+                    <div className="form-floating mb-3">
+                        <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Income Source"
+                        value={source}
+                        onChange={(e) => setSource(e.target.value)}
+                        required
+                        />
+                        <label>Income Source</label>
+                    </div>
+
+                    <div className="form-floating mb-3">
+                        <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
+                        />
+                        <label>Income Amount</label>
+                    </div>
+
+                    <div className="mb-3">
+                        <label>Date</label>
+                        <input
+                        type="date"
+                        className="form-control"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-100"
+                    >
+                        Add Income
+                    </button>
+
+                    </form>
                 </div>
-                <div>
-                    <label htmlFor="floatingDate">Date:</label><span>
-                    <input type="date" className="form-control mb-3" id="floatingDate" value={date} onChange={(e)=>setDate(e.target.value)}/></span>
+
                 </div>
-                <button className="btn btn-primary w-100 py-2" type="submit">Add Income</button>
-            </form>
+            </div>
+            </div>
         </>
     )
 }

@@ -34,7 +34,7 @@ export const postIncome = async(req,res)=>{
 }
 
 export const deleteIncome = async(req,res)=>{
-    const id = req.params._id
+    const id = req.params.id
     try{
         const data = await Income.findByIdAndDelete(id);
         if(!data){

@@ -36,8 +36,8 @@ export function FinanceProvider({children}:{children:ReactNode}){
     
     return(
         <FinanceContext.Provider value={{ incomes, expenses, 
-        setIncomes:()=>{}
-        , setExpenses:()=>{}
+        setIncomes
+        , setExpenses
         , fetchFinancialData}}>
             {children}
         </FinanceContext.Provider>

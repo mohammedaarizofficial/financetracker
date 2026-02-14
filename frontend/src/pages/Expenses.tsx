@@ -1,7 +1,5 @@
 import Navbar from "../../components/Navbar";
 import { useState,useContext } from "react";
-import ExpenseForm from '..//../components/ExpenseForm.tsx';
-import DeleteExpense from '../../components/DeleteExpense.tsx';
 import { FinanceContext } from "../context/FinanceContext.tsx";
 import UpdateExpense from '../../components/UpdateExpense.tsx';
 
@@ -55,7 +53,6 @@ function Expenses(){
         <>
         <Navbar />
         <h1>This is the expenses page</h1>
-        <ExpenseForm />
         <div className='container'>
             <div className='row mt-2 mb-3 text-center'>
                 {expense.map((details,index)=>(
@@ -65,7 +62,6 @@ function Expenses(){
                             <h3>Category:{details.category}</h3>
                             <h3>Date:{new Date(details.date).toLocaleDateString()}</h3>
                         </div>
-                        <DeleteExpense id={details.id} />
                         <UpdateExpense id={details.id} setIsModalOpen={setIsModalOpen} setSelectedId={setSelectedId}/>
                     </div>
                 ))}
