@@ -39,21 +39,53 @@ function Login({Username,Password,setUsername, setPassword}:LoginProps){
     }
 
     return(
-        <>
-            <form onSubmit={handleSubmit}>
-                <img className="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57" />
-                <h1 className="h3 mb-2 fw-normal">Please sign in</h1>
-                <div className="form-floating">
-                    <input type="text" className="form-control mb-2" id="floatingInput" placeholder="username" value={Username} onChange={(e)=>setUsername(e.target.value)} required/>
-                    <label htmlFor="floatingInput">Username:</label>
+        <div className="gradient-bg min-h-screen flex items-center justify-center p-4">
+            <div className="glass rounded-2xl shadow-2xl p-8 w-full max-w-md">
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
+                    <p className="text-zinc-400 text-sm">Sign in to your Finance Tracker</p>
                 </div>
-                <div className="form-floating">
-                    <input type="password" className="form-control mb-2" id="floatingPassword" placeholder="Password" value={Password} onChange={(e)=>setPassword(e.target.value)} required/>
-                    <label htmlFor="floatingPassword">Password:</label>
-                </div>
-                <button className="btn btn-primary w-100 py-2" type="submit" >Sign In</button>
-            </form>
-        </>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label htmlFor="username" className="block text-sm font-medium text-zinc-300 mb-2">
+                            Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username"
+                            className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                            placeholder="Enter your username"
+                            value={Username} 
+                            onChange={(e)=>setUsername(e.target.value)} 
+                            required
+                        />
+                    </div>
+                    
+                    <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-2">
+                            Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="password"
+                            className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                            placeholder="Enter your password"
+                            value={Password} 
+                            onChange={(e)=>setPassword(e.target.value)} 
+                            required
+                        />
+                    </div>
+                    
+                    <button 
+                        type="submit"
+                        className="w-full py-3 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-violet-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-indigo-500/20"
+                    >
+                        Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
     )
 }
 

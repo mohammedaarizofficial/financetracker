@@ -14,12 +14,18 @@ function Charts(){
     return(
         <>
         <Navbar />
-        <h1>This is charts page</h1>
-        <DashboardChart
-            totalIncome={totalIncome}
-            totalExpense={totalExpense}
-        />
-        <ExpenseByCategoryChart />
+        <div className="min-h-screen bg-zinc-950 pt-20 p-8">
+            <div className="max-w-7xl mx-auto">
+                <h1 className="text-3xl font-bold text-white mb-8 tracking-tight">Charts & Analytics</h1>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <DashboardChart
+                        totalIncome={totalIncome}
+                        totalExpense={totalExpense}
+                    />
+                    <ExpenseByCategoryChart />
+                </div>
+            </div>
+        </div>
         </>
     )
 }

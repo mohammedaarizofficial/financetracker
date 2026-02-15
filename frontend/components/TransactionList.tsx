@@ -25,80 +25,67 @@ function TransactionList({ transactions,setSelectedId, setIsModalOpen,setTransac
   );
 
   return (
-    <div className="card shadow-sm mt-4">
-      <div className="card-body">
+    <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 shadow-lg mt-6">
+      <h2 className="text-xl font-semibold text-white mb-6 tracking-tight">
+        Recent Transactions
+      </h2>
 
-        <h5 className="card-title mb-4">
-          Recent Transactions
-        </h5>
-
-        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-
-          {sorted.map((t) => (
-            <div
-              key={t.id}
-              className="d-flex justify-content-between align-items-center py-3 border-bottom"
-            >
-
-              {/* LEFT SECTION */}
-              <div className="d-flex align-items-center">
-
-                <div
-                  className="rounded-circle d-flex align-items-center justify-content-center me-3"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor:
-                      t.type === "income"
-                        ? "rgba(25,135,84,0.1)"
-                        : "rgba(220,53,69,0.1)"
-                  }}
-                >
-                  {t.type === "income" ? (
-                    <i className="bi bi-arrow-up-circle-fill text-success"></i>
-                  ) : (
-                    <i className="bi bi-arrow-down-circle-fill text-danger"></i>
-                  )}
-                </div>
-
-                <div>
-                  <div className="fw-semibold">
-                    {t.description}
-                  </div>
-                  <small className="text-muted">
-                    {t.category} ·{" "}
-                    {new Date(t.date).toLocaleDateString()}
-                  </small>
-                </div>
-
+      <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
+        {sorted.map((t) => (
+          <div
+            key={t.id}
+            className="flex items-center justify-between py-4 px-4 rounded-lg border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors duration-200 last:border-0"
+          >
+            {/* LEFT SECTION */}
+            <div className="flex items-center gap-4">
+              <div
+                className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 ${
+                  t.type === "income"
+                    ? "bg-emerald-500/10"
+                    : "bg-red-500/10"
+                }`}
+              >
+                {t.type === "income" ? (
+                  <svg className="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                ) : (
+                  <svg className="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17l5-5m0 0l-5-5m5 5H6" />
+                  </svg>
+                )}
               </div>
 
-              {/* RIGHT SECTION */}
-              <div className="d-flex align-items-center gap-3">
-
-                <span
-                  className={`fw-bold ${
-                    t.type === "income"
-                      ? "text-success"
-                      : "text-danger"
-                  }`}
-                >
-                  {t.type === "income" ? "+" : "-"}$
-                  {t.amount.toFixed(2)}
-                </span>
-
-                {/* UPDATE BUTTON */}
-               <UpdateTransaction id={t.id} type={t.type} setIsModalOpen={setIsModalOpen} setSelectedId={setSelectedId} setTransactionType={setTransactionType}/>
-
-                {/* DELETE BUTTON */}
-                <DeleteTransaction id={t.id} type={t.type}/>
-
+              <div>
+                <div className="font-medium text-white text-sm">
+                  {t.description}
+                </div>
+                <div className="text-xs text-zinc-400 mt-0.5">
+                  {t.category} · {new Date(t.date).toLocaleDateString()}
+                </div>
               </div>
-
             </div>
-          ))}
 
-        </div>
+            {/* RIGHT SECTION */}
+            <div className="flex items-center gap-3">
+              <span
+                className={`font-semibold text-sm ${
+                  t.type === "income"
+                    ? "text-emerald-500"
+                    : "text-red-500"
+                }`}
+              >
+                {t.type === "income" ? "+" : "-"}${t.amount.toFixed(2)}
+              </span>
+
+              {/* UPDATE BUTTON */}
+              <UpdateTransaction id={t.id} type={t.type} setIsModalOpen={setIsModalOpen} setSelectedId={setSelectedId} setTransactionType={setTransactionType}/>
+
+              {/* DELETE BUTTON */}
+              <DeleteTransaction id={t.id} type={t.type}/>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

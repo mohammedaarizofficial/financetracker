@@ -144,190 +144,154 @@ function Dashboard(){
     return(
         <>
         <Navbar />
-        <div className="container-fluid" style={{ marginTop: "90px" }}>
-            <div className="row">
-
+        <div className="min-h-screen bg-zinc-950 pt-20">
+            <div className="flex">
                 {/* Sidebar */}
-                <div className="col-12 col-md-3 col-lg-2 p-0">
                 <Sidebar 
                     setIncomeModalOpen={setIncomeModalOpen} 
                     setExpenseModalOpen={setExpenseModalOpen} 
                 />
-                </div>
 
                 {/* Main Content */}
-                <div className="col-12 col-md-9 col-lg-10 p-4">
+                <div className="flex-1 ml-64 p-8">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
+                            Welcome, {data?.username}
+                        </h1>
+                        <p className="text-zinc-400 text-sm">Track your finances at a glance</p>
+                    </div>
 
-                <h1>Welcome, {data?.username}</h1>
+                    {/* Summary Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        {/* Income Card */}
+                        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:border-emerald-500/50 transition-all duration-300">
+                            <div className="flex items-center gap-4">
+                                <div className="h-14 w-14 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                                    <svg className="h-7 w-7 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-zinc-400 mb-1">Total Income</p>
+                                    <p className="text-2xl font-bold text-emerald-500">
+                                        ${totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
-                {/* Summary Cards */}
-                <div className="container mt-4">
-                    <div className="row g-4">
-                    {/* Income Card */}
-            <div className="col-12 col-md-4">
-            <div className="card shadow-sm border-0 h-100">
-                <div className="card-body d-flex align-items-center">
-                
-                {/* Icon */}
-                <div
-                    className="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                    style={{ width: "55px", height: "55px" }}
-                >
-                    <i className="bi bi-arrow-up-circle-fill text-success fs-4"></i>
-                </div>
+                        {/* Expense Card */}
+                        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:border-red-500/50 transition-all duration-300">
+                            <div className="flex items-center gap-4">
+                                <div className="h-14 w-14 rounded-xl bg-red-500/10 flex items-center justify-center">
+                                    <svg className="h-7 w-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17l5-5m0 0l-5-5m5 5H6" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-zinc-400 mb-1">Total Expenses</p>
+                                    <p className="text-2xl font-bold text-red-500">
+                                        ${totalExpense.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
-                {/* Text */}
-                <div>
-                    <h6 className="text-muted mb-1">Total Income</h6>
-                    <h4 className="fw-bold text-success mb-0">
-                    ${totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                    </h4>
-                </div>
+                        {/* Balance Card */}
+                        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:border-indigo-500/50 transition-all duration-300">
+                            <div className="flex items-center gap-4">
+                                <div className="h-14 w-14 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                                    <svg className="h-7 w-7 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-zinc-400 mb-1">Balance</p>
+                                    <p className={`text-2xl font-bold ${balance >= 0 ? "text-indigo-500" : "text-red-500"}`}>
+                                        ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                </div>
-            </div>
-            </div>
+                    {/* Charts */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <DashboardChart totalIncome={totalIncome} totalExpense={totalExpense}/>
+                        <ExpenseByCategoryChart />
+                    </div>
 
-            {/* Expense Card */}
-            <div className="col-12 col-md-4">
-            <div className="card shadow-sm border-0 h-100">
-                <div className="card-body d-flex align-items-center">
-
-                {/* Icon */}
-                <div
-                    className="rounded-circle bg-danger bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                    style={{ width: "55px", height: "55px" }}
-                >
-                    <i className="bi bi-arrow-down-circle-fill text-danger fs-4"></i>
-                </div>
-
-                {/* Text */}
-                <div>
-                    <h6 className="text-muted mb-1">Total Expenses</h6>
-                    <h4 className="fw-bold text-danger mb-0">
-                    ${totalExpense.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                    </h4>
-                </div>
-
-                </div>
-            </div>
-            </div>
-
-            {/* Balance Card */}
-            <div className="col-12 col-md-4">
-            <div className="card shadow-sm border-0 h-100">
-                <div className="card-body d-flex align-items-center">
-
-                {/* Icon */}
-                <div
-                    className="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                    style={{ width: "55px", height: "55px" }}
-                >
-                    <i className="bi bi-wallet2 text-primary fs-4"></i>
-                </div>
-
-                {/* Text */}
-                <div>
-                    <h6 className="text-muted mb-1">Balance</h6>
-                    <h4
-                    className={`fw-bold mb-0 ${
-                        balance >= 0 ? "text-primary" : "text-danger"
-                    }`}
-                    >
-                    ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                    </h4>
+                    {/* Transactions */}
+                    <TransactionList transactions={transactions} setSelectedId={setSelectedId} setIsModalOpen={setIsModalOpen} setTransactionType={setTransactionType}/>
                 </div>
             </div>
         </div>
-     </div>
-                    </div>
-                </div>
 
-                <div className="container mt-4">
-                    <div className="row g-4">
-
-                        {/* Card 1 */}
-                        <div className="col-12 col-md-6">
-                        <DashboardChart totalIncome={totalIncome} totalExpense={totalExpense}/>
-                        </div>
-
-                        {/* Card 2 */}
-                        <div className="col-12 col-md-6">
-                        <ExpenseByCategoryChart />
-                        </div>
-
-                    </div>
-                </div>
-
-                <TransactionList transactions={transactions} setSelectedId={setSelectedId} setIsModalOpen={setIsModalOpen} setTransactionType={setTransactionType}/>
-
-                </div>
-
-            </div>
-            </div>
-
-
-            {incomeModalOpen&&<IncomeForm setIncomeModalOpen={setIncomeModalOpen} />}
-            {expenseModalOpen&&<ExpenseForm setExpenseModalOpen={setExpenseModalOpen} />}
+        {incomeModalOpen&&<IncomeForm setIncomeModalOpen={setIncomeModalOpen} />}
+        {expenseModalOpen&&<ExpenseForm setExpenseModalOpen={setExpenseModalOpen} />}
 
             {isModalOpen && (
-                <div className="modal show d-block" tabIndex={-1}>
-                    <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content rounded-4 shadow">
-                        <div className="modal-header">
-                        <h5 className="modal-title">Update</h5>
-                        <button
-                            type="button"
-                            className="btn-close"
-                            onClick={() => setIsModalOpen(false)}
-                        ></button>
-                        </div>
-
-                        <div className="modal-body">
-                        <form onSubmit={handleUpdate}>
-                            <div className="form-floating mb-3">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder={transactionType==="income"?"Source":"Category"}
-                                value={transactionType=="income"?source:category}
-                                onChange={transactionType==="income"?(e) => setSource(e.target.value):(e)=>setCategory(e.target.value)}
-                            />
-                            <label>Source</label>
-                            </div>
-
-                            <div className="form-floating mb-3">
-                            <input
-                                type="number"
-                                className="form-control"
-                                placeholder="Amount"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
-                            />
-                            <label>Amount</label>
-                            </div>
-
-                            <div className="mb-3">
-                            <label>Date:</label>
-                            <input
-                                type="date"
-                                className="form-control"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                            />
-                            </div>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl w-full max-w-md">
+                        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
+                            <h3 className="text-xl font-semibold text-white">Update Transaction</h3>
                             <button
-                            type="submit"
-                            className="btn btn-primary w-100"
+                                type="button"
+                                className="text-zinc-400 hover:text-white transition-colors"
+                                onClick={() => setIsModalOpen(false)}
                             >
-                            Update
+                                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                             </button>
-                        </form>
                         </div>
-                    </div>
+
+                        <div className="p-6">
+                            <form onSubmit={handleUpdate} className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-zinc-300 mb-2">
+                                        {transactionType==="income"?"Source":"Category"}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        placeholder={transactionType==="income"?"Source":"Category"}
+                                        value={transactionType=="income"?source:category}
+                                        onChange={transactionType==="income"?(e) => setSource(e.target.value):(e)=>setCategory(e.target.value)}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-zinc-300 mb-2">Amount</label>
+                                    <input
+                                        type="number"
+                                        className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        placeholder="Amount"
+                                        value={amount}
+                                        onChange={(e) => setAmount(e.target.value)}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-zinc-300 mb-2">Date</label>
+                                    <input
+                                        type="date"
+                                        className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        value={date}
+                                        onChange={(e) => setDate(e.target.value)}
+                                    />
+                                </div>
+                                
+                                <button
+                                    type="submit"
+                                    className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-semibold rounded-lg hover:from-indigo-500 hover:to-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl"
+                                >
+                                    Update
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
             )}
         </>
     )
