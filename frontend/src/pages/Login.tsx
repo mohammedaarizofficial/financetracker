@@ -45,6 +45,21 @@ function Login({Username,Password,setUsername, setPassword}:LoginProps){
                     <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
                     <p className="text-zinc-400 text-sm">Sign in to your Finance Tracker</p>
                 </div>
+
+                {/* Demo Credentials */}
+                <div className="mb-6 p-4 bg-zinc-800/50 border border-zinc-700 rounded-lg">
+                    <p className="text-xs text-zinc-400 mb-2 font-semibold uppercase tracking-wide">Demo Credentials</p>
+                    <div className="space-y-1 text-sm">
+                        <div className="flex items-center justify-between">
+                            <span className="text-zinc-400">Username:</span>
+                            <span className="text-white font-mono font-semibold">user</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-zinc-400">Password:</span>
+                            <span className="text-white font-mono font-semibold">user123</span>
+                        </div>
+                    </div>
+                </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>

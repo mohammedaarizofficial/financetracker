@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "update-user": "node scripts/updateUser.js"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
