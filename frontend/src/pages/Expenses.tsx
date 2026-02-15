@@ -1,7 +1,6 @@
 import Navbar from "../../components/Navbar";
 import { useState,useContext } from "react";
 import { FinanceContext } from "../context/FinanceContext.tsx";
-import UpdateExpense from '../../components/UpdateExpense.tsx';
 
 function Expenses(){
     const finance = useContext(FinanceContext);
@@ -10,7 +9,6 @@ function Expenses(){
     const [category, setCategory] = useState<string>('');
     const [amount, setAmount] = useState<string>('');
     const [date, setDate] = useState<string>('');
-    const [selectedId, setSelectedId] = useState<string>('');
     const totalExpense = expense.reduce((sum, num)=> sum+num.amount,0);
 
 
@@ -62,7 +60,7 @@ function Expenses(){
                             <h3>Category:{details.category}</h3>
                             <h3>Date:{new Date(details.date).toLocaleDateString()}</h3>
                         </div>
-                        <UpdateExpense id={details.id} setIsModalOpen={setIsModalOpen} setSelectedId={setSelectedId}/>
+
                     </div>
                 ))}
             </div>

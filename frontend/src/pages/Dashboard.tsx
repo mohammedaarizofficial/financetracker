@@ -8,18 +8,21 @@ import Sidebar from "../../components/Sidebar.tsx";
 import ExpenseForm from '../../components/ExpenseForm.tsx';
 import DashboardChart from '../../components/DashboardChart.tsx';
 import ExpenseByCategoryChart from '../../components/ExpenseByCategoryChart.tsx';
-
-
-type incomeType={
-    _id:string,
-    source:string,
-    amount:number,
-    date:Date,
-}
+import TransactionList from '../../components/TransactionList.tsx';
 
 type userData = {
     username:string,
 }
+
+// type Transaction={
+//     id:string,
+//     type:"income"|"expense",
+//     description:string,
+//     category:string,
+//     amount:number,
+//     date:Date
+// }
+
 
 function Dashboard(){
     const[data, setData] = useState<userData|null>(null);
@@ -29,7 +32,7 @@ function Dashboard(){
     const expense = finance?.expenses??[];
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
-    const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [source, setSource] = useState<string>('');
     const [amount, setAmount]= useState<string>('');
     const [date, setDate] = useState<string>('');
@@ -39,6 +42,29 @@ function Dashboard(){
     const balance = totalIncome - totalExpense;
     const [incomeModalOpen, setIncomeModalOpen] = useState<boolean>(false);
     const [expenseModalOpen, setExpenseModalOpen]=useState<boolean>(false);
+    const [transactionType, setTransactionType] = useState<string>('');
+    const [category, setCategory]= useState<string>('');
+    // const [transactionData, setTransactionData]=useState<incomeTransaction[] | expenseTransaction[]>([]);
+
+    const transactions = [
+        ...income.map(i => ({
+            id: i.id,
+            type: "income" as const,
+            description: i.source,
+            category: "Income",
+            amount: i.amount,
+            date: i.date
+        })),
+        ...expense.map(e => ({
+            id: e.id,
+            type: "expense" as const,
+            description: e.category,
+            category: "Expense",
+            amount: e.amount,
+            date: e.date
+        }))
+    ];
+
 
     useEffect(()=>{
         const fetchData = async()=>{
@@ -65,41 +91,49 @@ function Dashboard(){
         fetchData();
     },[])
 
-    const handleDelete = async(_id:string)=>{
-        const data = await fetch(`http://localhost:4321/income/${_id}`,{
-            method:'DELETE',
-            headers:{
-                Authorization:`Bearer ${token}`
-            }
-        });
-        // const income = await data.json();
-        console.log(data);
-        finance?.setIncomes(prev=>prev.filter(incomes => incomes._id != _id));
-        finance?.fetchFinancialData();
-    }
-
     const handleUpdate = async(e:React.FormEvent)=>{
         e.preventDefault();
         try{
-            const data = await fetch(`http://localhost:4321/income/${selectedId}`,{
-                method:"PUT",
-                headers:{
-                    'Content-Type':'application/json',
-                    Authorization:`Bearer ${token}`
-                },
-                body:JSON.stringify(
+            if(transactionType==='income'){
+                const data = await fetch(`http://localhost:4321/income/${selectedId}`,{
+                    method:"PUT",
+                    headers:{
+                        'Content-Type':'application/json',
+                        Authorization:`Bearer ${token}`
+                    },
+                    body:JSON.stringify(
+                        {
+                            source,
+                            amount:Number(amount),
+                            date:new Date(date)
+                        }
+                    )
+                })
+                const updatedIncome= await data.json();
+                finance?.setIncomes((prev)=>prev.map((item)=>item.id===updatedIncome.id?updatedIncome:item));
+                setSource('');
+            }else{
+                const response = await fetch(
+                    `http://localhost:4321/expense/${selectedId}`,
                     {
-                        source,
-                        amount,
-                        date
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            category,
+                            amount: Number(amount),
+                            date: new Date(date)
+                        })
                     }
-                )
-            })
-            const updatedData:incomeType = await data.json();
-            finance?.setIncomes((prev)=>prev.map((item)=>item._id===updatedData._id?updatedData:item));
-            finance?.fetchFinancialData();
-            setIsModelOpen(false);
-            setSource('');
+                );
+
+                const updatedExpense= await response.json();
+                finance?.setExpenses(prev =>prev.map((item) =>item.id === updatedExpense.id ? updatedExpense : item));
+                setCategory('');
+            }
+            setIsModalOpen(false);
             setAmount('');
             setDate('');
         }catch(err){
@@ -110,7 +144,7 @@ function Dashboard(){
     return(
         <>
         <Navbar />
-        <div className="container-fluid" style={{ marginTop: "70px" }}>
+        <div className="container-fluid" style={{ marginTop: "90px" }}>
             <div className="row">
 
                 {/* Sidebar */}
@@ -225,27 +259,7 @@ function Dashboard(){
                     </div>
                 </div>
 
-
-                {/* Income Cards */}
-                <div className="container mt-4">
-                    <div className="row text-center">
-                    {income.map((details,index)=>(
-                        <div className="col-12 col-md-4 mb-3" key={index}>
-                        <div className="card shadow-sm">
-                            <div className="card-body">
-                            <h5>Source: {details.source}</h5>
-                            <h5>Amount: {details.amount}</h5>
-                            <h6>{new Date(details.date).toLocaleDateString()}</h6>
-                            </div>
-                            <button type="button" className="btn btn-danger" onClick={()=>handleDelete(details._id)}>Delete</button>
-                            <button type="button" className="btn btn-secondary mt-2" onClick={()=>{
-                                setSelectedId(details._id);
-                                setIsModelOpen(true)}}>Update</button>
-                        </div>
-                        </div>
-                    ))}
-                    </div>
-                </div>
+                <TransactionList transactions={transactions} setSelectedId={setSelectedId} setIsModalOpen={setIsModalOpen} setTransactionType={setTransactionType}/>
 
                 </div>
 
@@ -265,7 +279,7 @@ function Dashboard(){
                         <button
                             type="button"
                             className="btn-close"
-                            onClick={() => setIsModelOpen(false)}
+                            onClick={() => setIsModalOpen(false)}
                         ></button>
                         </div>
 
@@ -275,9 +289,9 @@ function Dashboard(){
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Source"
-                                value={source}
-                                onChange={(e) => setSource(e.target.value)}
+                                placeholder={transactionType==="income"?"Source":"Category"}
+                                value={transactionType=="income"?source:category}
+                                onChange={transactionType==="income"?(e) => setSource(e.target.value):(e)=>setCategory(e.target.value)}
                             />
                             <label>Source</label>
                             </div>

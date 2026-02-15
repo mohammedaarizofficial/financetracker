@@ -7,6 +7,6 @@ const router = express.Router();
 router.get('/', verifytoken, getIncome);
 router.post('/', verifytoken, postIncome);
 router.delete('/:id', verifytoken, deleteIncome)
-router.put('/:_id', verifytoken, updateIncome);
+router.put('/:id', verifytoken, updateIncome);
 
 export default router;

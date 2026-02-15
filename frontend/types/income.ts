@@ -1,5 +1,5 @@
 export type IncomeType = {
-    _id:string,
+    id:string,
     source:string,
     amount:number,
     date:Date

@@ -4,7 +4,16 @@ export const getIncome = async(req,res)=>{
     try{
         const id = req.user.userId;
         const data = await Income.find({userId:id});
-        res.json(data);
+        const formattedData = data.map((details)=>(
+            {
+                id:details._id,
+                userId:details.userId,
+                source:details.source,
+                amount:details.amount,
+                date:details.date
+            }
+        ))
+        res.json(formattedData);
     }catch(err){
         console.log(err);
     }
@@ -47,7 +56,7 @@ export const deleteIncome = async(req,res)=>{
 }
 
 export const updateIncome = async(req,res)=>{
-    const id = req.params._id;
+    const id = req.params.id;
     try{
         const data = await Income.findByIdAndUpdate(id,
             {
@@ -61,7 +70,7 @@ export const updateIncome = async(req,res)=>{
             return res.status(401).json({message:'Unable to update income'});
         }
         res.json({
-            _id:data._id,
+            id:data._id,
             source:data.source,
             amount:data.amount,
             date:data.date

@@ -40,6 +40,11 @@ export const deleteExpense = async(req,res)=>{
     try{
         const id = req.params.id;
         const data = await Expenses.findByIdAndDelete(id);
+        if (!data) {
+            return res.status(404).json({
+                message: "Expense not found or unauthorized"
+            });
+        }
         res.status(201).json({message:'Expense Successfully deleted'});
     }catch(err){
         res.status(401).json({message:`${err}`});
