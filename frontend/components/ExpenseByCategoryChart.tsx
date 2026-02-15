@@ -8,6 +8,7 @@ import {
 } from "recharts";
 import { useContext } from "react";
 import {FinanceContext} from '../../frontend/src/context/FinanceContext';
+import { formatCurrency } from '../src/lib/utils';
 
 const COLORS = ["#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444", "#ec4899"];
 
@@ -31,7 +32,7 @@ function ExpenseByCategoryChart(){
     );
     return(
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 shadow-lg">
-            <h2 className="text-xl font-semibold text-white mb-6 text-center tracking-tight">
+            <h2 className="text-xl font-semibold text-white mb-6 text-center tracking-tight font-futuristic">
                 Expenses by Category
             </h2>
             <div style={{ width: "100%", height: 400 }}>
@@ -53,12 +54,20 @@ function ExpenseByCategoryChart(){
                         </Pie>
                         <Tooltip 
                             contentStyle={{
-                                backgroundColor: '#18181b',
+                                backgroundColor: '#fafafa',
                                 border: '1px solid #3f3f46',
                                 borderRadius: '0.5rem',
-                                color: '#fafafa'
+                                color: '#18181b',
+                                fontWeight: '600'
                             }}
-                            formatter={(value: number) => [`$${value.toLocaleString()}`, undefined]}
+                            itemStyle={{
+                                color: '#18181b'
+                            }}
+                            labelStyle={{
+                                color: '#18181b',
+                                fontWeight: '700'
+                            }}
+                            formatter={(value: number) => [formatCurrency(value), undefined]}
                         />
                         <Legend 
                             iconType="circle" 

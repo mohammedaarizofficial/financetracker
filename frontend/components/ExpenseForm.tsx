@@ -33,6 +33,8 @@ function ExpenseForm({setExpenseModalOpen}:ExperseFormProps){
             setCategory('');
             setAmount('');
             setDate('');
+            setExpenseModalOpen(false);
+            finance?.fetchFinancialData();
         }catch(err){
             console.log(err);
         }

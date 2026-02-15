@@ -9,6 +9,8 @@ import ExpenseForm from '../../components/ExpenseForm.tsx';
 import DashboardChart from '../../components/DashboardChart.tsx';
 import ExpenseByCategoryChart from '../../components/ExpenseByCategoryChart.tsx';
 import TransactionList from '../../components/TransactionList.tsx';
+import { formatCurrency } from '../lib/utils';
+import { useSidebar } from '../context/SidebarContext';
 
 type userData = {
     username:string,
@@ -32,6 +34,7 @@ function Dashboard(){
     const expense = finance?.expenses??[];
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
+    const { isCollapsed } = useSidebar();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [source, setSource] = useState<string>('');
     const [amount, setAmount]= useState<string>('');
@@ -143,8 +146,7 @@ function Dashboard(){
 
     return(
         <>
-        <Navbar />
-        <div className="min-h-screen bg-zinc-950 pt-20">
+        <div className="min-h-screen bg-zinc-950">
             <div className="flex">
                 {/* Sidebar */}
                 <Sidebar 
@@ -153,9 +155,9 @@ function Dashboard(){
                 />
 
                 {/* Main Content */}
-                <div className="flex-1 ml-64 p-8">
+                <div className={`flex-1 p-8 transition-all duration-300 ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
                     <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
+                        <h1 className="text-3xl font-bold text-white mb-2 tracking-tight font-futuristic">
                             Welcome, {data?.username}
                         </h1>
                         <p className="text-zinc-400 text-sm">Track your finances at a glance</p>
@@ -173,8 +175,8 @@ function Dashboard(){
                                 </div>
                                 <div>
                                     <p className="text-sm text-zinc-400 mb-1">Total Income</p>
-                                    <p className="text-2xl font-bold text-emerald-500">
-                                        ${totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                    <p className="text-2xl font-bold text-emerald-500 font-futuristic">
+                                        {formatCurrency(totalIncome)}
                                     </p>
                                 </div>
                             </div>
@@ -190,8 +192,8 @@ function Dashboard(){
                                 </div>
                                 <div>
                                     <p className="text-sm text-zinc-400 mb-1">Total Expenses</p>
-                                    <p className="text-2xl font-bold text-red-500">
-                                        ${totalExpense.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                    <p className="text-2xl font-bold text-red-500 font-futuristic">
+                                        {formatCurrency(totalExpense)}
                                     </p>
                                 </div>
                             </div>
@@ -207,8 +209,8 @@ function Dashboard(){
                                 </div>
                                 <div>
                                     <p className="text-sm text-zinc-400 mb-1">Balance</p>
-                                    <p className={`text-2xl font-bold ${balance >= 0 ? "text-indigo-500" : "text-red-500"}`}>
-                                        ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                                    <p className={`text-2xl font-bold font-futuristic ${balance >= 0 ? "text-indigo-500" : "text-red-500"}`}>
+                                        {formatCurrency(balance)}
                                     </p>
                                 </div>
                             </div>
@@ -217,7 +219,7 @@ function Dashboard(){
 
                     {/* Charts */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <DashboardChart totalIncome={totalIncome} totalExpense={totalExpense}/>
+                        <DashboardChart />
                         <ExpenseByCategoryChart />
                     </div>
 

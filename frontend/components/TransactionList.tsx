@@ -1,5 +1,6 @@
 import DeleteTransaction from './DeleteTransaction';
 import UpdateTransaction from './UpdateTransaction';
+import { formatCurrency } from '../src/lib/utils';
 
 interface Transaction {
   id: string;
@@ -26,7 +27,7 @@ function TransactionList({ transactions,setSelectedId, setIsModalOpen,setTransac
 
   return (
     <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 shadow-lg mt-6">
-      <h2 className="text-xl font-semibold text-white mb-6 tracking-tight">
+      <h2 className="text-xl font-semibold text-white mb-6 tracking-tight font-futuristic">
         Recent Transactions
       </h2>
 
@@ -69,13 +70,13 @@ function TransactionList({ transactions,setSelectedId, setIsModalOpen,setTransac
             {/* RIGHT SECTION */}
             <div className="flex items-center gap-3">
               <span
-                className={`font-semibold text-sm ${
+                className={`font-semibold text-sm font-futuristic ${
                   t.type === "income"
                     ? "text-emerald-500"
                     : "text-red-500"
                 }`}
               >
-                {t.type === "income" ? "+" : "-"}${t.amount.toFixed(2)}
+                {t.type === "income" ? "+" : "-"}{formatCurrency(t.amount)}
               </span>
 
               {/* UPDATE BUTTON */}
