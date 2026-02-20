@@ -1,4 +1,3 @@
-import Navbar from '../../components/Navbar.tsx';
 import { useEffect,useState,useContext } from 'react';
 import { AuthContext } from '../context/AuthContext.tsx';
 import { useNavigate } from 'react-router-dom';
@@ -15,16 +14,6 @@ import { useSidebar } from '../context/SidebarContext';
 type userData = {
     username:string,
 }
-
-// type Transaction={
-//     id:string,
-//     type:"income"|"expense",
-//     description:string,
-//     category:string,
-//     amount:number,
-//     date:Date
-// }
-
 
 function Dashboard(){
     const[data, setData] = useState<userData|null>(null);
@@ -67,7 +56,6 @@ function Dashboard(){
             date: e.date
         }))
     ];
-
 
     useEffect(()=>{
         const fetchData = async()=>{
