@@ -1,4 +1,4 @@
-import connectdb from '../backend/config/db.js';
+import connectdb from './config/db.js';
 import cors from 'cors';
 import express from 'express';
 import dotenv from 'dotenv';
