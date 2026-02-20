@@ -24,7 +24,7 @@ function Expenses(){
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-            `http://localhost:4321/expense/${selectedId}`,
+            `https://financetracker-production-766b.up.railway.app/expense/${selectedId}`,
             {
                 method: "PUT",
                 headers: {

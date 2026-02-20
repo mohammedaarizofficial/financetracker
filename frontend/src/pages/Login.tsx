@@ -15,7 +15,7 @@ function Login({Username,Password,setUsername, setPassword}:LoginProps){
     const handleSubmit = async(e:React.FormEvent)=>{
         e.preventDefault();
         try{
-            const credentials = await fetch('http://localhost:4321/users/login',{
+            const credentials = await fetch('https://financetracker-production-766b.up.railway.app/users/login',{
                 method:"POST",
                 headers:{
                     'Content-Type':'application/json',

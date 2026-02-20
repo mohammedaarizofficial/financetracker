@@ -63,7 +63,7 @@ function Dashboard(){
                 auth?.login();
             }
             try{
-                const data = await fetch('http://localhost:4321/users/dashboard-data',{
+                const data = await fetch('https://financetracker-production-766b.up.railway.app/users/dashboard-data',{
                     headers:{
                         Authorization:`Bearer ${token}`
                     },
@@ -86,7 +86,7 @@ function Dashboard(){
         e.preventDefault();
         try{
             if(transactionType==='income'){
-                const data = await fetch(`http://localhost:4321/income/${selectedId}`,{
+                const data = await fetch(`https://financetracker-production-766b.up.railway.app/income/${selectedId}`,{
                     method:"PUT",
                     headers:{
                         'Content-Type':'application/json',
@@ -105,7 +105,7 @@ function Dashboard(){
                 setSource('');
             }else{
                 const response = await fetch(
-                    `http://localhost:4321/expense/${selectedId}`,
+                    `https://financetracker-production-766b.up.railway.app/expense/${selectedId}`,
                     {
                         method: "PUT",
                         headers: {

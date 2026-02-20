@@ -11,13 +11,13 @@ export function FinanceProvider({children}:{children:ReactNode}){
     const fetchFinancialData = async()=>{
 
         const token = localStorage.getItem("token");
-        const incomeRes = await fetch('http://localhost:4321/income',{
+        const incomeRes = await fetch('https://financetracker-production-766b.up.railway.app/income',{
             headers:{
                 Authorization:`Bearer ${token}`
             }
         })
 
-        const expenseRes = await fetch('http://localhost:4321/expense',{
+        const expenseRes = await fetch('https://financetracker-production-766b.up.railway.app/expense',{
             headers:{
                 Authorization:`Bearer ${token}`
             }

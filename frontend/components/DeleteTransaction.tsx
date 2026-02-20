@@ -11,7 +11,7 @@ function DeleteTransaction({id,type}:ExpenseProps){
     const finance = useContext(FinanceContext);
     const handleDelete = async()=>{
         const token = localStorage.getItem("token");
-        const data = await fetch(type==="expense"?`http://localhost:4321/expense/${id}`:`http://localhost:4321/income/${id}`,{
+        const data = await fetch(type==="expense"?`https://financetracker-production-766b.up.railway.app/expense/${id}`:`https://financetracker-production-766b.up.railway.app/income/${id}`,{
             method:"DELETE",
             headers:{
                 Authorization:`Bearer ${token}`

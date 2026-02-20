@@ -15,7 +15,7 @@ function IncomeForm({setIncomeModalOpen}:IncomeFormProps){
         e.preventDefault();
         const token = localStorage.getItem('token');
         try{
-            const data = await fetch('http://localhost:4321/income',{
+            const data = await fetch('https://financetracker-production-766b.up.railway.app/income',{
                     method:"POST",
                     headers:{
                         "Content-Type":"application/json",

@@ -15,7 +15,7 @@ function ExpenseForm({setExpenseModalOpen}:ExperseFormProps){
         e.preventDefault();
         const token = localStorage.getItem('token');
         try{
-            const data = await fetch('http://localhost:4321/expense',{
+            const data = await fetch('https://financetracker-production-766b.up.railway.app/expense',{
                     method:"POST",
                     headers:{
                         "Content-Type":"application/json",
