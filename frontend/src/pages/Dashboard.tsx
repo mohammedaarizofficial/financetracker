@@ -10,6 +10,7 @@ import ExpenseByCategoryChart from '../../components/ExpenseByCategoryChart.tsx'
 import TransactionList from '../../components/TransactionList.tsx';
 import { formatCurrency } from '../lib/utils';
 import { useSidebar } from '../context/SidebarContext';
+import Loader from '../../components/Loader.tsx';
 
 type userData = {
     username:string,
@@ -36,6 +37,7 @@ function Dashboard(){
     const [expenseModalOpen, setExpenseModalOpen]=useState<boolean>(false);
     const [transactionType, setTransactionType] = useState<string>('');
     const [category, setCategory]= useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
     const API_URL = import.meta.env.VITE_API_URL;
     // const [transactionData, setTransactionData]=useState<incomeTransaction[] | expenseTransaction[]>([]);
 
@@ -58,30 +60,47 @@ function Dashboard(){
         }))
     ];
 
-    useEffect(()=>{
-        const fetchData = async()=>{
-            if(token){
-                auth?.login();
+    useEffect(() => {
+    const initializeDashboard = async () => {
+        try {
+            if (!token) {
+                navigate("/");
+                return;
             }
-            try{
-                const data = await fetch(`${API_URL}/users/dashboard-data`,{
-                    headers:{
-                        Authorization:`Bearer ${token}`
-                    },
+
+            auth?.login();
+
+            // Fetch user dashboard data
+            const response = await fetch(`${API_URL}/users/dashboard-data`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-                );
-                if (data.status === 401) {
+            });
+
+            if (response.status === 401) {
                 auth?.logout();
                 navigate("/");
+                return;
             }
-                const credentials = await data.json();
-                setData(credentials);
-            }catch(err){
-                console.log(err);
-            }
+
+            const credentials = await response.json();
+            setData(credentials);
+
+            // Fetch finance data from context
+            await finance?.fetchFinancialData();
+
+        } catch (err) {
+            console.log(err);
+        } finally {
+            // Give small delay to avoid flash
+            setTimeout(() => {
+                setLoading(false);
+            }, 800);
         }
-        fetchData();
-    },[])
+    };
+
+    initializeDashboard();
+}, []);
 
     const handleUpdate = async(e:React.FormEvent)=>{
         e.preventDefault();
@@ -131,6 +150,10 @@ function Dashboard(){
         }catch(err){
             console.log(err);
         }
+    }
+
+    if (loading) {
+        return <Loader />;
     }
 
     return(
