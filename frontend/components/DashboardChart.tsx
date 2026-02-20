@@ -92,7 +92,10 @@ function DashboardChart() {
               color: '#18181b',
               fontWeight: '700'
             }}
-            formatter={(value: number) => [formatCurrency(value), undefined]}
+            formatter={(value: number | undefined) => [
+              formatCurrency(value ?? 0),
+              ""
+            ]}
           />
           <Legend 
             iconType="circle" 

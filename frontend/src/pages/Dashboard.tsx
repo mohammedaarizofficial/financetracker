@@ -36,6 +36,7 @@ function Dashboard(){
     const [expenseModalOpen, setExpenseModalOpen]=useState<boolean>(false);
     const [transactionType, setTransactionType] = useState<string>('');
     const [category, setCategory]= useState<string>('');
+    const API_URL = import.meta.env.VITE_API_URL;
     // const [transactionData, setTransactionData]=useState<incomeTransaction[] | expenseTransaction[]>([]);
 
     const transactions = [
@@ -63,7 +64,7 @@ function Dashboard(){
                 auth?.login();
             }
             try{
-                const data = await fetch('https://financetracker-production-766b.up.railway.app/users/dashboard-data',{
+                const data = await fetch(`${API_URL}/users/dashboard-data`,{
                     headers:{
                         Authorization:`Bearer ${token}`
                     },
@@ -86,7 +87,7 @@ function Dashboard(){
         e.preventDefault();
         try{
             if(transactionType==='income'){
-                const data = await fetch(`https://financetracker-production-766b.up.railway.app/income/${selectedId}`,{
+                const data = await fetch(`${API_URL}/income/${selectedId}`,{
                     method:"PUT",
                     headers:{
                         'Content-Type':'application/json',
@@ -105,7 +106,7 @@ function Dashboard(){
                 setSource('');
             }else{
                 const response = await fetch(
-                    `https://financetracker-production-766b.up.railway.app/expense/${selectedId}`,
+                    `${API_URL}/expense/${selectedId}`,
                     {
                         method: "PUT",
                         headers: {

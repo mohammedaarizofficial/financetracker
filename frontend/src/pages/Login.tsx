@@ -11,11 +11,12 @@ interface LoginProps{
 function Login({Username,Password,setUsername, setPassword}:LoginProps){
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleSubmit = async(e:React.FormEvent)=>{
         e.preventDefault();
         try{
-            const credentials = await fetch('https://financetracker-production-766b.up.railway.app/users/login',{
+            const credentials = await fetch(`${API_URL}/users/login`,{
                 method:"POST",
                 headers:{
                     'Content-Type':'application/json',

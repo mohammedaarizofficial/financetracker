@@ -10,12 +10,13 @@ function IncomeForm({setIncomeModalOpen}:IncomeFormProps){
     const [source, setSource]= useState<string>('');
     const [amount, setAmount]=useState<string>('');
     const [date, setDate]=useState<string>('');
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleSubmit =async(e:React.FormEvent)=>{
         e.preventDefault();
         const token = localStorage.getItem('token');
         try{
-            const data = await fetch('https://financetracker-production-766b.up.railway.app/income',{
+            const data = await fetch(`${API_URL}/income`,{
                     method:"POST",
                     headers:{
                         "Content-Type":"application/json",

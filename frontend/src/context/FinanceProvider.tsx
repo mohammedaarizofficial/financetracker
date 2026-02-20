@@ -7,17 +7,18 @@ import type { IncomeType } from "../../types/income";
 export function FinanceProvider({children}:{children:ReactNode}){
     const [incomes, setIncomes]=useState<IncomeType[]>([]);
     const [expenses, setExpenses]=useState<ExpenseType[]>([]);
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const fetchFinancialData = async()=>{
 
         const token = localStorage.getItem("token");
-        const incomeRes = await fetch('https://financetracker-production-766b.up.railway.app/income',{
+        const incomeRes = await fetch(`${API_URL}/income`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
         })
 
-        const expenseRes = await fetch('https://financetracker-production-766b.up.railway.app/expense',{
+        const expenseRes = await fetch(`${API_URL}/expense`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

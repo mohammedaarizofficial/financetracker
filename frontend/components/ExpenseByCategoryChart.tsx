@@ -45,7 +45,7 @@ function ExpenseByCategoryChart(){
                             outerRadius={120}
                             innerRadius={60}
                             paddingAngle={3}
-                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                            label={({ name, percent }) => `${name}: ${((percent??0) * 100).toFixed(0)}%`}
                             labelLine={false}
                         >
                             {expenseByCategory.map((_, index) => (
@@ -67,7 +67,10 @@ function ExpenseByCategoryChart(){
                                 color: '#18181b',
                                 fontWeight: '700'
                             }}
-                            formatter={(value: number) => [formatCurrency(value), undefined]}
+                            formatter={(value: number | undefined) => [
+                                formatCurrency(value ?? 0),
+                                ""
+                            ]}
                         />
                         <Legend 
                             iconType="circle" 

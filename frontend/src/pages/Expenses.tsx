@@ -1,4 +1,4 @@
-import Navbar from "../../components/Navbar";
+
 import { useState,useContext } from "react";
 import { FinanceContext } from "../context/FinanceContext.tsx";
 import { formatCurrency } from "../lib/utils";
@@ -13,8 +13,9 @@ function Expenses(){
     const [amount, setAmount] = useState<string>('');
     const [date, setDate] = useState<string>('');
     const totalExpense = expense.reduce((sum, num)=> sum+num.amount,0);
+    const API_URL = import.meta.env.VITE_API_URL;
 
-
+    console.log(setSelectedId);
 
     finance?.fetchFinancialData();
 
@@ -24,7 +25,7 @@ function Expenses(){
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-            `https://financetracker-production-766b.up.railway.app/expense/${selectedId}`,
+            `${API_URL}/expense/${selectedId}`,
             {
                 method: "PUT",
                 headers: {

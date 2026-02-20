@@ -8,10 +8,11 @@ interface ExpenseProps{
 
 
 function DeleteTransaction({id,type}:ExpenseProps){
+    const API_URL = import.meta.env.VITE_API_URL;
     const finance = useContext(FinanceContext);
     const handleDelete = async()=>{
         const token = localStorage.getItem("token");
-        const data = await fetch(type==="expense"?`https://financetracker-production-766b.up.railway.app/expense/${id}`:`https://financetracker-production-766b.up.railway.app/income/${id}`,{
+        const data = await fetch(type==="expense"?`${API_URL}/expense/${id}`:`${API_URL}/income/${id}`,{
             method:"DELETE",
             headers:{
                 Authorization:`Bearer ${token}`
