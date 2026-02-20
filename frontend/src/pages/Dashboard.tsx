@@ -41,6 +41,33 @@ function Dashboard(){
     const API_URL = import.meta.env.VITE_API_URL;
     // const [transactionData, setTransactionData]=useState<incomeTransaction[] | expenseTransaction[]>([]);
 
+    const fetchWithRetry = async (
+        url: string,
+        options: RequestInit,
+        retries = 5,
+        delay = 2000
+        ): Promise<Response> => {
+        for (let i = 0; i < retries; i++) {
+            try {
+            const response = await fetch(url, options);
+
+            // If server is waking up (404/500), retry
+            if (response.status >= 500 || response.status === 404) {
+                throw new Error("Server waking up...");
+            }
+
+            return response;
+
+            } catch (error) {
+            if (i === retries - 1) throw error;
+
+            await new Promise(res => setTimeout(res, delay));
+            }
+        }
+
+        throw new Error("Failed after retries");
+    };
+
     const transactions = [
         ...income.map(i => ({
             id: i.id,
@@ -71,7 +98,7 @@ function Dashboard(){
             auth?.login();
 
             // Fetch user dashboard data
-            const response = await fetch(`${API_URL}/users/dashboard-data`, {
+            const response = await fetchWithRetry(`${API_URL}/users/dashboard-data`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
