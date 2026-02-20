@@ -18,6 +18,8 @@ This application allows users to securely manage their **income and expenses**, 
 🚀 **Live Website:**  
 👉 https://financetracker-wine.vercel.app/
 
+⚠ Backend may take 20–30 seconds to initialize on first request due to free-tier hosting cold starts.
+
 ---
 
 # 🏗️ Deployment Architecture
