@@ -39,7 +39,6 @@ function Dashboard(){
     const [category, setCategory]= useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const API_URL = import.meta.env.VITE_API_URL;
-    // const [transactionData, setTransactionData]=useState<incomeTransaction[] | expenseTransaction[]>([]);
 
     const fetchWithRetry = async (
         url: string,
