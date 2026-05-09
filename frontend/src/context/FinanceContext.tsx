@@ -7,7 +7,8 @@ type FinanceContextType = {
     expenses:ExpenseType[],
     setIncomes:React.Dispatch<React.SetStateAction<IncomeType[]>>,
     setExpenses:React.Dispatch<React.SetStateAction<ExpenseType[]>>,
-    fetchFinancialData:()=>void
+    fetchFinancialData:()=>void,
+    loading:boolean
 }
 
 export const FinanceContext = createContext<FinanceContextType | null>(null);

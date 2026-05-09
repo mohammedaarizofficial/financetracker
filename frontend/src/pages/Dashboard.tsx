@@ -20,9 +20,14 @@ function Dashboard(){
     const[data, setData] = useState<userData|null>(null);
     const auth = useContext(AuthContext);
     const finance = useContext(FinanceContext);
-    const income = finance?.incomes??[];
-    const expense = finance?.expenses??[];
-    const navigate = useNavigate();
+    const income = Array.isArray(finance?.incomes)
+    ? finance.incomes
+    : [];
+
+    const expense = Array.isArray(finance?.expenses)
+    ? finance.expenses
+    : [];
+        const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const { isCollapsed } = useSidebar();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -51,7 +56,11 @@ function Dashboard(){
             const response = await fetch(url, options);
 
             // If server is waking up (404/500), retry
-            if (response.status >= 500 || response.status === 404) {
+            if (
+                response.status === 401 ||
+                response.status === 404 ||
+                response.status >= 500
+            ) {
                 throw new Error("Server waking up...");
             }
 
@@ -126,7 +135,7 @@ function Dashboard(){
     };
 
     initializeDashboard();
-}, []);
+}, [token]);
 
     const handleUpdate = async(e:React.FormEvent)=>{
         e.preventDefault();
@@ -178,7 +187,7 @@ function Dashboard(){
         }
     }
 
-    if (loading) {
+    if (loading || finance?.loading) {
         return <Loader />;
     }
 
